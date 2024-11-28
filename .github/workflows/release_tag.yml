@@ -22,7 +22,7 @@ jobs:
       - name: 버전 정보 추출
         id: version
         run: |
-          VERSION=$(node -p "require('.apps//package.json').versions.${merged_branch}")
+          VERSION=$(node -p "require('./package.json').versions.${merged_branch}")
           echo "version=$VERSION" >> $GITHUB_ENV
 
       # 4. Release 태그 생성
