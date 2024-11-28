@@ -26,6 +26,8 @@ jobs:
         run: |
           git tag -a "v$VERSION" -m "Release v$VERSION"
           git push origin "v$VERSION"
+          git config --global user.email "hyeonin.choi@enlighten.kr"
+          git config --global user.name "EN-hyeoninchoi"
 
       # 4. GitHub Release 생성
       - name: GitHub Release 생성
