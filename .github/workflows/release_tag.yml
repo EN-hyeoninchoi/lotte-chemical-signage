@@ -11,34 +11,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. 버전 태그 계산 (package.json 파일에서 버전 정보 추출)
+      # 2. 머지된 브랜치 이름 추출
+      - name: 머지된 브랜치 이름 추출
+        id: branch
+        run: |
+          MERGED_BRANCH=$(git log -1 --pretty=%B | grep -oP '(?<=from )[^\s]+')
+          echo "merged_branch=$MERGED_BRANCH" >> $GITHUB_ENV
+
+      # 3. 버전 태그 계산 (package.json 파일에서 버전 정보 추출)
       - name: 버전 정보 추출
         id: version
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          echo "VERSION=${VERSION}"
-          echo "version=${VERSION}" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_ENV
 
-      # 3. Release 태그 생성
+      # 4. Release 태그 생성
       - name: Release 태그 생성
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "EN-hyeoninchoi"
           git config --global user.email "hyeonin.choi@enlighten.kr"
-          git tag -a "v${version}" -m "Release v${version}"
-          git push origin "v${version}"
+          git tag -a "{merged_branch}-v${version}" -m "Release {merged_branch}-v${version}"
+          git push origin "{merged_branch}-v${version}"
 
 
-      # 4. GitHub Release 생성
+      # 5. GitHub Release 생성
       - name: GitHub Release 생성
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "v${{ env.version }}"
-          release_name: "Release v${{ env.version }}"
+          tag_name: "${{ env.merged_branch }}-v${{ env.version }}"
+          release_name: "Release ${{ env.merged_branch }}-v${{ env.version }}"
           body: |
-            새로운 릴리즈입니다!
+            ${{ env.merged_branch }}의 새로운 릴리즈입니다!
           draft: false
           prerelease: false
