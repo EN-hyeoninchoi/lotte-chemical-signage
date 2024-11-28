@@ -103,6 +103,7 @@ export default function Home() {
         mb="32px"
       />
       <Image src="/img1.jpg" width={1920} height={692} alt={'이미지1'} />
+      <Typography>릴리즈 테스트</Typography>
     </Grid>
   )
 }
