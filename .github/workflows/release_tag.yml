@@ -34,8 +34,8 @@ jobs:
         run: |
           git config --global user.name "EN-hyeoninchoi"
           git config --global user.email "hyeonin.choi@enlighten.kr"
-          git tag -a "v${env.version}" -m "Release v${env.version}"
-          git push origin "v${env.version}"
+          git tag -a "v${version}" -m "Release v${version}"
+          git push origin "v${version}"
 
 
       # 4. GitHub Release 생성
