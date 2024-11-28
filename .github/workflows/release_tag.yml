@@ -15,7 +15,7 @@ jobs:
       - name: 머지된 브랜치 이름 추출
         id: branch
         run: |
-          MERGED_BRANCH=$(git log -1 --pretty=%B | grep -oP '(?<=from )[^\s]+')
+          MERGED_BRANCH=$(git log -1 --pretty=%B | sed -n 's/.*(\([^)]*\)).*/\1/p')
           echo "merged_branch=$MERGED_BRANCH" >> $GITHUB_ENV
 
       # 3. 버전 태그 계산 (package.json 파일에서 버전 정보 추출)
