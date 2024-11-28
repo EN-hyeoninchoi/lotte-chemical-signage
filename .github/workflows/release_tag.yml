@@ -10,7 +10,11 @@ jobs:
       # 1. 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v3
-
+      # 2. Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
       # 2. 버전 태그 계산 (package.json 파일에서 버전 정보 추출)
       - name: 버전 정보 추출
         id: version
